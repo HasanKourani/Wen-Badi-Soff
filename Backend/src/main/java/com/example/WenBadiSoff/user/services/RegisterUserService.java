@@ -3,6 +3,7 @@ package com.example.WenBadiSoff.user.services;
 import com.example.WenBadiSoff.Command;
 import com.example.WenBadiSoff.user.UserRepository;
 import com.example.WenBadiSoff.user.model.User;
+import com.example.WenBadiSoff.validators.RegisterValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class RegisterUserService implements Command<User, String> {
     @Override
     public ResponseEntity<String> execute(User user) {
         user.setId(UUID.randomUUID());
+        RegisterValidator.execute(user);
         userRepository.save(user);
 
         return ResponseEntity.status(HttpStatus.CREATED).body("User Created Successfully");
