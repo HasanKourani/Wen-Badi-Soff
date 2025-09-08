@@ -2,7 +2,8 @@ package com.example.WenBadiSoff.exceptions;
 
 public enum ErrorMessages {
     FIELD_REQUIRED("Please fill all required fields"),
-    PASSWORD_NOT_STRONG("Password should include 1 small letter, 1 capital letter, and 1 special character"),
+    PASSWORD_NOT_STRONG("Password should be at least 8 characters long, include 1 small letter, " +
+            "1 capital letter, 1 digit, and 1 special character (%$#@, etc...)"),
     USERNAME_EXISTS("This username is not available"),
     EMAIL_TAKEN("An account with this email already exists"),
     CAR_PLATE_UNAVAILABLE("This car plate is not available"),

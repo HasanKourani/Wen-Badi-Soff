@@ -1,7 +1,8 @@
 package com.example.WenBadiSoff.user;
 
-import com.example.WenBadiSoff.user.model.User;
+import com.example.WenBadiSoff.user.model.UserRegistrationRequestDTO;
 import com.example.WenBadiSoff.user.services.RegisterUserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,9 +17,8 @@ public class UserController {
         this.registerUserService = registerUserService;
     }
 
-
     @PostMapping("/user/register")
-    public ResponseEntity<String> registerUser(@RequestBody User user) {
-        return registerUserService.execute(user);
+    public ResponseEntity<String> registerUser(@Valid @RequestBody UserRegistrationRequestDTO userDTO) {
+        return registerUserService.execute(userDTO);
     }
 }

@@ -5,6 +5,7 @@ import com.example.WenBadiSoff.exceptions.ErrorMessages;
 import com.example.WenBadiSoff.exceptions.UserNotValidException;
 import com.example.WenBadiSoff.user.UserRepository;
 import com.example.WenBadiSoff.user.model.User;
+import com.example.WenBadiSoff.user.model.UserRegistrationRequestDTO;
 import com.example.WenBadiSoff.validators.RegisterValidator;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class RegisterUserService implements Command<User, String> {
+public class RegisterUserService implements Command<UserRegistrationRequestDTO, String> {
 
     private final PasswordEncoder encoder;
     private final UserRepository userRepository;
@@ -26,9 +27,16 @@ public class RegisterUserService implements Command<User, String> {
     }
 
     @Override
-    public ResponseEntity<String> execute(User user) {
+    public ResponseEntity<String> execute(UserRegistrationRequestDTO userDTO) {
 
+        User user = new User();
         user.setId(UUID.randomUUID());
+        user.setUsername(userDTO.getUsername());
+        user.setEmail(userDTO.getEmail());
+        user.setPasswordHash(userDTO.getPasswordHash());
+        user.setPhoneNumber(userDTO.getPhoneNumber());
+        user.setCarPlate(userDTO.getCarPlate());
+        user.setRole("USER");
 
         RegisterValidator.execute(user);
 
@@ -43,7 +51,6 @@ public class RegisterUserService implements Command<User, String> {
             userRepository.save(user);
             return ResponseEntity.status(HttpStatus.CREATED).body("User Created Successfully");
         }
-
 
         if(checkEmail.isPresent()) {
             throw new UserNotValidException(ErrorMessages.EMAIL_TAKEN.getMessage());
