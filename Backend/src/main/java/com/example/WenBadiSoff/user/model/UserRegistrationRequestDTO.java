@@ -2,7 +2,6 @@ package com.example.WenBadiSoff.user.model;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 @Data
@@ -10,7 +9,6 @@ public class UserRegistrationRequestDTO {
 
     @Pattern(regexp = "^[A-Za-z][A-Za-z0-9._]{2,15}$",
     message = "Username should be 3-16 characters long, start with a letter, and can only include letters, numbers, underscores, and dots")
-    @Size(min = 3, max = 16, message = "Username should be between 3 to 16 characters long")
     private String username;
 
     @Email
