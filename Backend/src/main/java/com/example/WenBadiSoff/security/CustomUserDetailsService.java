@@ -1,5 +1,6 @@
 package com.example.WenBadiSoff.security;
 
+import com.example.WenBadiSoff.exceptions.ErrorMessages;
 import com.example.WenBadiSoff.user.UserRepository;
 import com.example.WenBadiSoff.user.model.CustomUser;
 import org.springframework.security.core.userdetails.User;
@@ -19,12 +20,11 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String identifier) throws UsernameNotFoundException {
-        CustomUser customUser;
-        if (identifier.contains("@")) {
-            customUser = userRepository.findByEmail(identifier).get();
-        } else {
-            customUser = userRepository.findByUsername(identifier).get();
-        }
+
+        CustomUser customUser = (identifier.contains("@")
+                ? userRepository.findByEmail(identifier)
+                : userRepository.findByUsername(identifier))
+                .orElseThrow(() -> new UsernameNotFoundException(ErrorMessages.INVALID_CREDENTIALS.getMessage()));
 
         return User
                 .withUsername(customUser.getUsername())

@@ -2,6 +2,7 @@ package com.example.WenBadiSoff.exceptions;
 
 import com.example.WenBadiSoff.user.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -30,5 +31,12 @@ public class GlobalExceptionHandler {
             errorList.put(error.getField(), error.getDefaultMessage());
         }
         return new ErrorResponse(errorList);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ResponseBody
+    public ErrorResponse handleWrongUsernameOrPassword(BadCredentialsException exception) {
+        return new ErrorResponse(ErrorMessages.INVALID_CREDENTIALS.getMessage());
     }
 }

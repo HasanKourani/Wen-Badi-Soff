@@ -7,7 +7,8 @@ public enum ErrorMessages {
     USERNAME_EXISTS("This username is not available"),
     EMAIL_TAKEN("An account with this email already exists"),
     CAR_PLATE_UNAVAILABLE("This car plate is not available"),
-    PHONE_NUMBER_TAKEN("An account with this phone number already exists")
+    PHONE_NUMBER_TAKEN("An account with this phone number already exists"),
+    INVALID_CREDENTIALS("Invalid Credentials")
     ;
 
     private final String message;
