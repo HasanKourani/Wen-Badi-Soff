@@ -5,6 +5,7 @@ import com.example.WenBadiSoff.exceptions.ErrorMessages;
 import com.example.WenBadiSoff.exceptions.UserNotValidException;
 import com.example.WenBadiSoff.security.JwtUtil;
 import com.example.WenBadiSoff.user.model.UserLoginRequestDTO;
+import com.example.WenBadiSoff.validators.LoginValidator;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,6 +25,9 @@ public class LoginUserService implements Command<UserLoginRequestDTO, String> {
 
     @Override
     public ResponseEntity<String> execute(UserLoginRequestDTO userDTO) {
+
+        LoginValidator.execute(userDTO);
+
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(
                 userDTO.getIdentifier(),
                 userDTO.getPassword()
