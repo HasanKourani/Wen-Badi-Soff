@@ -29,6 +29,6 @@ public class GlobalExceptionHandler {
         for(FieldError error : exception.getBindingResult().getFieldErrors()) {
             errorList.put(error.getField(), error.getDefaultMessage());
         }
-        return new ErrorResponse(errorList.toString());
+        return new ErrorResponse(errorList);
     }
 }
