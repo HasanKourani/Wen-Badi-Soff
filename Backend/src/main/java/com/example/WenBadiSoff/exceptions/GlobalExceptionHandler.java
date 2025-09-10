@@ -1,6 +1,5 @@
 package com.example.WenBadiSoff.exceptions;
 
-import com.example.WenBadiSoff.user.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;

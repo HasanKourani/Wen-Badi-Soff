@@ -1,4 +1,4 @@
-package com.example.WenBadiSoff.user.model;
+package com.example.WenBadiSoff.exceptions;
 
 import lombok.Getter;
 
