@@ -36,4 +36,9 @@ public class SecurityConfiguration {
                 })
                 .build();
     }
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter() {
+        return new JwtAuthenticationFilter();
+    }
 }
