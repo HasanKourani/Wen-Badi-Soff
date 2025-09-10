@@ -1,6 +1,8 @@
 package com.example.WenBadiSoff.user.services;
 
 import com.example.WenBadiSoff.Command;
+import com.example.WenBadiSoff.exceptions.ErrorMessages;
+import com.example.WenBadiSoff.exceptions.UserNotValidException;
 import com.example.WenBadiSoff.security.JwtUtil;
 import com.example.WenBadiSoff.user.model.UserLoginRequestDTO;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,10 @@ public class LoginUserService implements Command<UserLoginRequestDTO, String> {
 
         String jwtToken = JwtUtil.generateToken((User) authentication.getPrincipal());
 
-        return ResponseEntity.ok(jwtToken);
+        if(!jwtToken.isEmpty()) {
+            return ResponseEntity.ok(jwtToken);
+        } else{
+            throw new UserNotValidException(ErrorMessages.FIELD_REQUIRED.getMessage());
+        }
     }
 }

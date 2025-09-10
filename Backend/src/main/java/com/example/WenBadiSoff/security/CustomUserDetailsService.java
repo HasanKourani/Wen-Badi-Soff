@@ -1,4 +1,4 @@
-package com.example.WenBadiSoff.user.services;
+package com.example.WenBadiSoff.security;
 
 import com.example.WenBadiSoff.user.UserRepository;
 import com.example.WenBadiSoff.user.model.CustomUser;
@@ -27,7 +27,7 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
 
         return User
-                .withUsername(String.valueOf(customUser.getId()))
+                .withUsername(customUser.getUsername())
                 .password(customUser.getPasswordHash())
                 .build();
     }
