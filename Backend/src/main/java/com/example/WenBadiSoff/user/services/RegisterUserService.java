@@ -4,7 +4,7 @@ import com.example.WenBadiSoff.Command;
 import com.example.WenBadiSoff.exceptions.ErrorMessages;
 import com.example.WenBadiSoff.exceptions.UserNotValidException;
 import com.example.WenBadiSoff.user.UserRepository;
-import com.example.WenBadiSoff.user.model.User;
+import com.example.WenBadiSoff.user.model.CustomUser;
 import com.example.WenBadiSoff.user.model.UserRegistrationRequestDTO;
 import com.example.WenBadiSoff.validators.RegisterValidator;
 import org.springframework.http.HttpStatus;
@@ -29,26 +29,26 @@ public class RegisterUserService implements Command<UserRegistrationRequestDTO, 
     @Override
     public ResponseEntity<String> execute(UserRegistrationRequestDTO userDTO) {
 
-        User user = new User();
-        user.setId(UUID.randomUUID());
-        user.setUsername(userDTO.getUsername());
-        user.setEmail(userDTO.getEmail());
-        user.setPasswordHash(userDTO.getPasswordHash());
-        user.setPhoneNumber(userDTO.getPhoneNumber());
-        user.setCarPlate(userDTO.getCarPlate());
-        user.setRole("USER");
+        CustomUser customUser = new CustomUser();
+        customUser.setId(UUID.randomUUID());
+        customUser.setUsername(userDTO.getUsername());
+        customUser.setEmail(userDTO.getEmail());
+        customUser.setPasswordHash(userDTO.getPasswordHash());
+        customUser.setPhoneNumber(userDTO.getPhoneNumber());
+        customUser.setCarPlate(userDTO.getCarPlate());
+        customUser.setRole("USER");
 
-        RegisterValidator.execute(user);
+        RegisterValidator.execute(customUser);
 
-        user.setPasswordHash(encoder.encode(user.getPasswordHash()));
+        customUser.setPasswordHash(encoder.encode(customUser.getPasswordHash()));
 
-        Optional<User> checkEmail = userRepository.findByEmail(user.getEmail());
-        Optional<User> checkUsername = userRepository.findByUsername(user.getUsername());
-        Optional<User> checkPhoneNumber = userRepository.findByPhoneNumber(user.getPhoneNumber());
-        Optional<User> checkCarPlate = userRepository.findByCarPlate(user.getCarPlate());
+        Optional<CustomUser> checkEmail = userRepository.findByEmail(customUser.getEmail());
+        Optional<CustomUser> checkUsername = userRepository.findByUsername(customUser.getUsername());
+        Optional<CustomUser> checkPhoneNumber = userRepository.findByPhoneNumber(customUser.getPhoneNumber());
+        Optional<CustomUser> checkCarPlate = userRepository.findByCarPlate(customUser.getCarPlate());
 
         if(checkEmail.isEmpty() && checkUsername.isEmpty() && checkPhoneNumber.isEmpty() && checkCarPlate.isEmpty()) {
-            userRepository.save(user);
+            userRepository.save(customUser);
             return ResponseEntity.status(HttpStatus.CREATED).body("User Created Successfully");
         }
 

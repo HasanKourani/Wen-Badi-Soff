@@ -11,7 +11,7 @@ import java.util.UUID;
 @Entity
 @Table(name = "users")
 @Data
-public class User {
+public class CustomUser {
 
     @Id
     @Column(name = "id")

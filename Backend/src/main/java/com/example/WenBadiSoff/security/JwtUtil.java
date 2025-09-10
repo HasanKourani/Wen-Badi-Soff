@@ -1,10 +1,10 @@
 package com.example.WenBadiSoff.security;
 
-import com.example.WenBadiSoff.user.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.security.core.userdetails.User;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
@@ -14,7 +14,7 @@ public class JwtUtil {
     public static String generateToken(User user) {
         return Jwts
                 .builder()
-                .subject(String.valueOf(user.getId()))
+                .subject(String.valueOf(user.getUsername()))
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date((System.currentTimeMillis()) + 600_000))
                 .signWith(getSigningKey())
