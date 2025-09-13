@@ -34,5 +34,5 @@ public class Places {
 
     @Column(name = "available_spots")
     private String availableSpots;
-    
+
 }
