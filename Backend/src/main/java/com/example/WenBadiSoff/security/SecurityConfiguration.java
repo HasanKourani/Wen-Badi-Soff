@@ -31,6 +31,7 @@ public class SecurityConfiguration {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> {
                     authorize.requestMatchers("/user/register").permitAll();
+                    authorize.requestMatchers("/places/parkinglots").permitAll();
 
                     authorize.anyRequest().authenticated();
                 })
