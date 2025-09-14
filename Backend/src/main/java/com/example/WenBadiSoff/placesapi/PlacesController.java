@@ -1,10 +1,12 @@
 package com.example.WenBadiSoff.placesapi;
 
-import com.example.WenBadiSoff.placesapi.model.PlacesDTO;
+import com.example.WenBadiSoff.placesapi.model.PlaceDTO;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class PlacesController {
@@ -16,7 +18,7 @@ public class PlacesController {
     }
 
     @PostMapping("/places/parkinglots")
-    public ResponseEntity<PlacesDTO> getParkingLots(@RequestBody String placeSearch) {
+    public ResponseEntity<List<PlaceDTO>> getParkingLots(@RequestBody String placeSearch) {
         return placesService.execute(placeSearch);
     }
 }

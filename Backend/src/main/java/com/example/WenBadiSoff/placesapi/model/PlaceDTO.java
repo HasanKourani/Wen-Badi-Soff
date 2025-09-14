@@ -5,9 +5,10 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class PlacesDTO {
-    private String name;
+public class PlaceDTO {
+    private DisplayName name;
     private String address;
+    private Location location;
     private String totalSpots;
     private String availableSpots;
 }

@@ -1,28 +1,25 @@
 package com.example.WenBadiSoff.placesapi;
 
 import com.example.WenBadiSoff.Query;
-import com.example.WenBadiSoff.placesapi.model.PlacesDTO;
+import com.example.WenBadiSoff.placesapi.model.PlaceDTO;
+import com.example.WenBadiSoff.placesapi.model.PlacesResponse;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 @Service
-public class PlacesService implements Query<String, PlacesDTO> {
+public class PlacesService implements Query<String, List<PlaceDTO>> {
 
     private final RestTemplate restTemplate;
 
     @Value("${places.api.url}")
     private String url;
-
-    @Value("${content.type}")
-    private String contentType;
 
     @Value("${places.x.goog-api-key}")
     private String apiKey;
@@ -35,32 +32,39 @@ public class PlacesService implements Query<String, PlacesDTO> {
     }
 
     @Override
-    public ResponseEntity<PlacesDTO> execute(String placeSearch) {
+    public ResponseEntity<List<PlaceDTO>> execute(String placeSearch) {
 
-        URI uri = UriComponentsBuilder
-                .fromUriString(url)
-                .build()
-                .toUri();
+        URI uri = URI.create(url);
 
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", contentType);
+        headers.setContentType(MediaType.APPLICATION_JSON);
         headers.set("X-Goog-Api-Key", apiKey);
         headers.set("X-Goog-FieldMask", fieldMask);
 
-        HttpEntity<String> entity = new HttpEntity<>(headers);
+        Map<String, Object> payload = Map.of("textQuery", placeSearch);
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(payload, headers);
 
-        try {
-            ResponseEntity<PlacesDTO> response = restTemplate
-                    .exchange(uri, HttpMethod.POST, entity, PlacesDTO.class);
+        ResponseEntity<PlacesResponse> response = restTemplate
+                .exchange(uri, HttpMethod.POST, entity, PlacesResponse.class);
 
-            PlacesDTO placesDTO = new PlacesDTO(response.getBody().getName(),
-                                                response.getBody().getAddress(),
-                                                response.getBody().getTotalSpots(),
-                                                response.getBody().getAvailableSpots());
-            return ResponseEntity.ok(placesDTO);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        PlacesResponse body = response.getBody();
+        if(body == null || body.getPlaces() == null || body.getPlaces().isEmpty()) {
+            return ResponseEntity.ok(Collections.emptyList());
         }
+
+        System.out.println(body.getPlaces());
+
+        List<PlaceDTO> placeDTO =
+                body.getPlaces().stream()
+                        .map(p -> new PlaceDTO(
+                                p.getDisplayName(),
+                                p.getFormattedAddress(),
+                                p.getLocation(),
+                                "0",
+                                "0"
+                        ))
+                        .toList();
+        return ResponseEntity.ok(placeDTO);
 
     }
 }
